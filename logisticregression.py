@@ -15,9 +15,9 @@ from sklearn.preprocessing import StandardScaler
 # - X is an (m, n) feature matrix (no bias column yet)
 # - y is an (m,) label vector
 def load_data():
-    df = pd.read_csv("creditcard.csv")
-    X = df.drop(columns=["Time"]).values
-    y = df["label"].values
+    df = pd.read_csv("candy-data.csv")
+    X = df.drop(columns=["competitorname", "chocolate"]).values
+    y = df["chocolate"].values
     scaler = StandardScaler()
     X = scaler.fit_transform(X)
     m, n = X.shape
@@ -118,9 +118,9 @@ def predict_label(X_new, w, threshold=0.5):
     return (predict_proba(X_new, w) >= threshold).astype(int)
 
 p5 = predict_label(X, w)
-a = (preds == y).mean()
+a = (p5 == y).mean()
 print(f"accuracy: {a*100:.2f}%")
 print(f"loss: {cost1[-1]:.4f}")
 label = {0: "Not Chocolate", 1: "Chocolate"}
-p10 = [label[p] for p in preds[:8500]] 
+p10 = [label[p] for p in p5[:8500]] 
 print("Sample predictions:", p10)
